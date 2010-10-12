@@ -1,0 +1,11 @@
+#kill startup message
+startup_message off
+# define a bigger scrollback, default is 100 lines
+defscrollback 1024
+
+bindkey -d ^? stuff ^H
+bindkey -d ^@ stuff ^H
+
+hardstatus on
+hardstatus alwayslastline
+hardstatus string "%{.bW}%-w%{.rW}%n %t%{-}%+w %= %d/%m %C%a %{..G} %H %{..Y} %l"

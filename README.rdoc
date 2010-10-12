@@ -1,0 +1,7 @@
+= DESCRIPTION:
+
+Sets up servers with all the great sysadmin stuff.
+
+= REQUIREMENTS:
+
+Ubuntu-specific, sorry.
