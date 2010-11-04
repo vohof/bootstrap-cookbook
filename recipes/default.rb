@@ -24,6 +24,7 @@ package "iftop"
 package "logrotate"
 package "sysstat"
 package "dstat"
+package "lm-sensors"
 
 package "bind9-host"
 package "ntp"
