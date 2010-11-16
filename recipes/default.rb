@@ -46,6 +46,9 @@ end
 # root config for screen
 screen_config "/root/.screenrc"
 
+# root ssh agent for screen
+bash_aliases "/root/bash_aliases"
+
 # ssh keys
 directory "/root/.ssh" do
   mode "0700"
