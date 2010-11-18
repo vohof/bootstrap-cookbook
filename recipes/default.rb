@@ -8,6 +8,7 @@ class Chef::Resource
   include FileHelpers
 end
 
+# should make these configurable really...
 package "vim"
 package "curl"
 package "ack-grep"
@@ -21,6 +22,8 @@ package "strace"
 package "lsof"
 package "htop"
 package "iftop"
+package "vnstat"
+package "ntop"
 package "logrotate"
 package "sysstat"
 package "dstat"
@@ -60,13 +63,10 @@ file "/root/.ssh/authorized_keys" do
   backup false
 end
 
-ruby_block "Add my own SSH keys" do
-  block do
-    data_bag("keys").each do |key|
-      properties = data_bag_item("keys", key)
-      properties["public"].each do |public_key|
-        file_append("/root/.ssh/authorized_keys", public_key)
-      end
+if node.has_key? :ssh_keys
+  ruby_block "Add my own SSH keys" do
+    block do
+      file_write("/root/.ssh/authorized_keys", node[:ssh_keys].join("\n"))
     end
   end
 end
