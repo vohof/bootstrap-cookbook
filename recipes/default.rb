@@ -74,7 +74,7 @@ end
 ruby_block "Make SSH more secure" do
   block do
     file_replace("/etc/ssh/sshd_confing", /$.*Port\s\d+/, "Port #{node[:sysadmin][:sshd][:port]}")
-    file_replace("/etc/ssh/sshd_confing", /$.*PasswordAuthentication\s\w+", "PasswordAuthentication #{node[:sysadmin][:sshd][:password_authentication]}")
+    file_replace("/etc/ssh/sshd_confing", /$.*PasswordAuthentication\s\w+/, "PasswordAuthentication #{node[:sysadmin][:sshd][:password_authentication]}")
     file_replace("/etc/ssh/sshd_confing", /$.*PermitRootLogin\s\w+/, "PermitRootLogin #{node[:sysadmin][:sshd][:permit_root_login]}")
   end
 end
