@@ -63,10 +63,10 @@ file "/root/.ssh/authorized_keys" do
   backup false
 end
 
-if node.has_key? :ssh_keys
+if node[:bootstrap].has_key? :ssh_keys
   ruby_block "Add my own SSH keys" do
     block do
-      ssh_keys = node[:ssh_keys].values.flatten.join("\n")
+      ssh_keys = node[:bootstrap][:ssh_keys].values.flatten.join("\n")
       file_write("/root/.ssh/authorized_keys", ssh_keys)
     end
   end
@@ -74,8 +74,8 @@ end
 
 ruby_block "Make SSH more secure" do
   block do
-    file_replace("/etc/ssh/sshd_config", /^.*Port\s\d+/, "Port #{node[:sysadmin][:sshd][:port]}")
-    file_replace("/etc/ssh/sshd_config", /^.*PasswordAuthentication\s\w+/, "PasswordAuthentication #{node[:sysadmin][:sshd][:password_authentication]}")
-    file_replace("/etc/ssh/sshd_config", /^.*PermitRootLogin\s\w+/, "PermitRootLogin #{node[:sysadmin][:sshd][:permit_root_login]}")
+    file_replace("/etc/ssh/sshd_config", /^.*Port\s\d+/, "Port #{node[:bootstrap][:sshd][:port]}")
+    file_replace("/etc/ssh/sshd_config", /^.*PasswordAuthentication\s\w+/, "PasswordAuthentication #{node[:bootstrap][:sshd][:password_authentication]}")
+    file_replace("/etc/ssh/sshd_config", /^.*PermitRootLogin\s\w+/, "PermitRootLogin #{node[:bootstrap][:sshd][:permit_root_login]}")
   end
 end
