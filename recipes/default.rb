@@ -39,6 +39,7 @@ package "unzip"
 package "unrar"
 
 package "lynx"
+package "tmux"
 
 # memory stats helper
 cookbook_file "/usr/local/bin/memory_stats" do
@@ -49,7 +50,7 @@ end
 # root config for screen
 screen_config "/root/.screenrc"
 
-# root ssh agent for screen
+# root ssh agent for screen and other useful aliases
 bash_aliases "/root/.bash_aliases"
 
 # ssh keys

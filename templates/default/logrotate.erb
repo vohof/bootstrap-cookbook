@@ -1,0 +1,12 @@
+<%= @paths %> {
+  <%= @period %>
+  missingok
+  notifempty
+  copytruncate
+  rotate <%= @keep %>
+  compress
+  compresscmd /bin/bzip2
+  uncompresscmd /bin/bunzip2
+  compressext .bz2
+  dateext
+}

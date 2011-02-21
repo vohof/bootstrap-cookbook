@@ -4,3 +4,52 @@ _ssh_auth_save() {
 }
 alias screen='_ssh_auth_save ; export HOSTNAME=$(hostname) ; screen'
 
+alias l='ls -lah'
+alias .='pwd'
+alias ..='cd ../'
+alias ...='cd ../../'
+
+alias runrar=''
+
+# RAILS
+alias rs='rails server'
+alias ras='rake spec'
+alias rdbm='rake db:migrate'
+alias rc='rails console'
+alias C='cucumber -r features'
+
+# GIT
+alias gst='git status'
+alias gco='git checkout'
+alias gpu='git pull'
+alias gup='git pull --rebase'
+alias gf='git fetch'
+alias gp='git push'
+alias gc='git commit -v'
+alias gca='git commit -v -a'
+alias gb='git branch'
+alias gba='git branch -a'
+alias gbd='git branch -d'
+alias gcount='git shortlog -sn --no-merges'
+alias gcp='git cherry-pick'
+alias gsi='git submodule init'
+alias gsu='git submodule update'
+
+# GEMS
+alias sgem='sudo gem'
+alias gs='gem search'
+alias gsr='gem search -r'
+alias gsrp='gem search -r --pre'
+
+# BUNDLER
+alias bi="bundle install"
+alias bu="bundle update"
+alias bx="bundle exec"
+alias bp="bundle package"
+
+# Find
+alias rfind='find . -name *.rb | xargs grep -in'
+alias afind='ack-grep -il'
+alias g='grep -in'
+alias a='ack -i'
+
