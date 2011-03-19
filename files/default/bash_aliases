@@ -52,4 +52,3 @@ alias rfind='find . -name *.rb | xargs grep -in'
 alias afind='ack-grep -il'
 alias g='grep -in'
 alias a='ack -i'
-

@@ -1,6 +1,6 @@
 hostname node[:hostname]
 
-host "Assigning our own FQDN" do
+host "Assigning #{node[:hostname]} as the hostname" do
   search eval("/^#{node[:ipaddress]}/")
   replace "#{node[:ipaddress]}\t#{node[:hostname]}"
 end
