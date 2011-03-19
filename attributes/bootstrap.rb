@@ -1,3 +1,3 @@
-default[:sysadmin][:sshd][:port]                    = "9876"
-default[:sysadmin][:sshd][:password_authentication] = "no"
-default[:sysadmin][:sshd][:permit_root_login]       = "yes"
+default[:bootstrap][:sshd][:port]                    = "9876"
+default[:bootstrap][:sshd][:password_authentication] = "no"
+default[:bootstrap][:sshd][:permit_root_login]       = "yes"

@@ -1,3 +1,3 @@
-bash 'Setting up UFW' do
-  code node[:bootstrap][:firewall].join("\n")
+execute 'Setting up UFW' do
+  command node[:bootstrap][:firewall].join("\n")
 end

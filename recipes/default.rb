@@ -28,6 +28,7 @@ package "logrotate"
 package "sysstat"
 package "dstat"
 package "lm-sensors"
+package "hddtemp"
 
 package "bind9-host"
 package "ntp"
@@ -40,6 +41,16 @@ package "unrar"
 
 package "lynx"
 package "tmux"
+
+# configure vnstat
+Chef::Log.info "Ensure vnstat has a database for eth0"
+execute "vnstat -u -i eth0"
+
+# enable sysstat logging
+Chef::Log.info "Ensure sar logging is enabled"
+sysstat = Chef::Util::FileEdit.new("/etc/default/sysstat")
+sysstat.search_file_replace_line('ENABLED="false"', 'ENABLED="true"')
+sysstat.write_file
 
 # memory stats helper
 cookbook_file "/usr/local/bin/memory_stats" do
@@ -67,7 +78,7 @@ end
 if node[:bootstrap].has_key? :ssh_keys
   ruby_block "Add my own SSH keys" do
     block do
-      ssh_keys = node[:bootstrap][:ssh_keys].values.flatten.join("\n")
+      ssh_keys = node[:bootstrap][:ssh_keys].join("\n")
       file_write("/root/.ssh/authorized_keys", ssh_keys)
     end
   end
@@ -80,3 +91,6 @@ ruby_block "Make SSH more secure" do
     file_replace("/etc/ssh/sshd_config", /^.*PermitRootLogin\s\w+/, "PermitRootLogin #{node[:bootstrap][:sshd][:permit_root_login]}")
   end
 end
+
+# we'll be using rake to cook the various roles
+gem_package "rake"

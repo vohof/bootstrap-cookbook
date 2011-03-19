@@ -9,7 +9,7 @@ alias .='pwd'
 alias ..='cd ../'
 alias ...='cd ../../'
 
-alias runrar=''
+alias runrar='find . -iname "*.rar" | xargs -i unrar x {}'
 
 # RAILS
 alias rs='rails server'

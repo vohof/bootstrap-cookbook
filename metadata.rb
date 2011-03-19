@@ -1,7 +1,7 @@
 maintainer       "Gerhard Lazu"
 maintainer_email "gerhard@lazu.co.uk"
 license          "Apache 2.0"
-description      "Sets Ubuntu servers with my favourite sysadmin tools"
+description      "Default bootstrap tasks"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.2"
 
