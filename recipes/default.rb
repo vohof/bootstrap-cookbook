@@ -47,10 +47,13 @@ Chef::Log.info "Ensure vnstat has a database for eth0"
 execute "vnstat -u -i eth0"
 
 # enable sysstat logging
-Chef::Log.info "Ensure sar logging is enabled"
-sysstat = Chef::Util::FileEdit.new("/etc/default/sysstat")
-sysstat.search_file_replace_line('ENABLED="false"', 'ENABLED="true"')
-sysstat.write_file
+ruby_block "Ensure sar logging is enabled" do
+  block do
+    sysstat = Chef::Util::FileEdit.new("/etc/default/sysstat")
+    sysstat.search_file_replace_line('ENABLED="false"', 'ENABLED="true"')
+    sysstat.write_file
+  end
+end
 
 # memory stats helper
 cookbook_file "/usr/local/bin/memory_stats" do
