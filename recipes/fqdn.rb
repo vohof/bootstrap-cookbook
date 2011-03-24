@@ -1,6 +1,6 @@
-hostname node[:hostname]
+hostname node[:bootstrap][:hostname]
 
-host "Assigning #{node[:hostname]} as the hostname" do
+host "Assigning #{node[:bootstrap][:hostname]} as the hostname" do
   search eval("/^#{node[:ipaddress]}/")
-  replace "#{node[:ipaddress]}\t#{node[:hostname]}"
+  replace "#{node[:ipaddress]}\t#{node[:bootstrap][:hostname]}"
 end
