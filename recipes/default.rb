@@ -97,3 +97,5 @@ end
 
 # we'll be using rake to cook the various roles
 gem_package "rake"
+# using this when exchanging keys
+gem_package "net-ssh"
