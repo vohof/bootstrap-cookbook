@@ -1,4 +1,9 @@
-require 'net/ssh'
+begin
+  require 'net/ssh'
+rescue LoadError
+  Chef::Log.error "Need to install net-ssh gem"
+end
+
 
 action :create do
   execute "Create a passphraseless SSH key if missing" do
