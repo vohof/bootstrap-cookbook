@@ -43,8 +43,10 @@ package "lynx"
 package "tmux"
 
 # configure vnstat
-Chef::Log.info "Ensure vnstat has a database for eth0"
-execute "vnstat -u -i eth0"
+execute "Ensure vnstat has a database for eth0" do
+  command "vnstat -u -i eth0"
+  not_if "test -f /var/lib/vnstat/eth0"
+end
 
 # enable sysstat logging
 ruby_block "Ensure sar logging is enabled" do
