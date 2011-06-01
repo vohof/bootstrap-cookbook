@@ -47,6 +47,10 @@ execute "Ensure vnstat has a database for eth0" do
   command "vnstat -u -i eth0"
   not_if "test -f /var/lib/vnstat/eth0"
 end
+execute "Ensure vnstat daemon is running" do
+  command "/etc/init.d/vnstat start"
+  not_if "ps aux | grep [v]nstat"
+end
 
 # enable sysstat logging
 ruby_block "Ensure sar logging is enabled" do
