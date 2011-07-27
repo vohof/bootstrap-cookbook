@@ -38,7 +38,9 @@ package "ntpdate"
 package "bzip2"
 package "zip"
 package "unzip"
-package "unrar"
+package "unrar" do
+  not_if "[ $(apt-cache show unrar | grep -c unrar) -lt 1 ]"
+end
 
 package "lynx"
 package "tmux"
