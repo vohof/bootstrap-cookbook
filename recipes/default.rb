@@ -1,9 +1,41 @@
+#
+# Cookbook Name:: bootstrap
+# Recipe:: default
+#
+# Author:: Gerhard Lazu (<gerhard@lazu.co.uk>)
+#
+# Copyright 2011, Gerhard Lazu
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
 case node[:platform]
 when "debian", "ubuntu"
   include_recipe "apt"
 end
 
 # should make these configurable really...
+package "libxml2"
+package "libxml2-dev"
+package "libxslt1-dev"
+package "libcurl3"
+package "libcurl3-gnutls"
+package "libcurl4-openssl-dev"
+package "libreadline5-dev"
+package "libssl-dev"
+package "libsqlite3-dev"
+package "sqlite3"
+
 package "vim"
 package "curl"
 package "ack-grep"
@@ -64,3 +96,10 @@ cookbook_file "/usr/local/bin/memory_stats" do
   source "memory_stats"
   mode 0755
 end
+
+screen_config "/root/.screenrc"
+bash_aliases "/root/.bash_aliases"
+
+gem_package "net-ssh"
+gem_package "rake"
+gem_package "bundler"
