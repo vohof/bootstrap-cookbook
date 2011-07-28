@@ -31,11 +31,3 @@ directory "/mnt" do
   group "root"
   mode "0755"
 end
-
-execute "move logging to /mnt/log" do
-  command %{
-    mv /var/log /mnt/log
-    ln -nfs /mnt/log /var/log
-  }
-  not_if "[ -d /mnt/log ]"
-end
