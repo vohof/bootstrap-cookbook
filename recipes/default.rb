@@ -25,17 +25,6 @@ when "debian", "ubuntu"
 end
 
 # should make these configurable really...
-package "libxml2"
-package "libxml2-dev"
-package "libxslt1-dev"
-package "libcurl3"
-package "libcurl3-gnutls"
-package "libcurl4-openssl-dev"
-package "libreadline5-dev"
-package "libssl-dev"
-package "libsqlite3-dev"
-package "sqlite3"
-
 package "vim"
 package "curl"
 package "ack-grep"

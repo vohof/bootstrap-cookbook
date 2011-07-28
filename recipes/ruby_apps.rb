@@ -21,6 +21,19 @@
 
 include_recipe "rvm"
 
+# Most common Ruby-related dependencies
+package "libxml2"
+package "libxml2-dev"
+package "libxslt1-dev"
+package "libcurl3"
+package "libcurl3-gnutls"
+package "libcurl4-openssl-dev"
+package "libreadline5-dev"
+package "libssl-dev"
+package "libsqlite3-dev"
+package "sqlite3"
+
+
 node[:bootstrap][:ruby_apps].each do |name|
   ruby_app name
 	logrotate name
