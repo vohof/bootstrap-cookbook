@@ -31,3 +31,5 @@ directory "/mnt" do
   group "root"
   mode "0755"
 end
+
+package "s3cmd"
