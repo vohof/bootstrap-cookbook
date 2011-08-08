@@ -23,8 +23,8 @@ include_recipe "ssh"
 
 admin_group = `grep vagrant /etc/passwd`.empty? ? [] : ['vagrant']
 
-node[:bootstrap][:users].each do |username, keys|
-  admin_group << username
+node[:bootstrap][:users].each do |username, properties|
+  admin_group << username if properties[:type] == "admin"
 
   user username do
     supports  :manage_home => true
@@ -43,7 +43,7 @@ node[:bootstrap][:users].each do |username, keys|
   end
 
   authorized_keys username do
-    ssh_keys keys
+    ssh_keys properties[:keys]
   end
 end
 
