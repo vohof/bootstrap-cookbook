@@ -46,6 +46,7 @@ package "sysstat"
 package "dstat"
 package "lm-sensors"
 package "hddtemp"
+package "pwgen"
 
 package "bind9-host"
 package "ntp"
