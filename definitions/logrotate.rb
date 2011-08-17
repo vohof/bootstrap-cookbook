@@ -5,7 +5,7 @@ define :logrotate, :enable => true, :owner => "root", :group => "root", :period 
       source "logrotate.erb"
       owner params[:owner]
       group params[:group]
-      mode "0755"
+      mode "0644"
       variables(
         :paths  => params[:paths],
         :period => params[:period],
