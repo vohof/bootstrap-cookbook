@@ -9,7 +9,7 @@ define :ruby_app do
 
   ruby_block 'add_to_group' do
     block do
-      %w{www-data rvm}.each do |group|
+      %w{rvm deploy}.each do |group|
         unless `id #{username}`.include? group
           system "usermod -a -G #{group} #{username}"
         end
