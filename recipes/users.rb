@@ -25,6 +25,10 @@ admin_group = `grep vagrant /etc/passwd`.empty? ? [] : ['vagrant']
 deploy_group = []
 
 node[:bootstrap][:users].each do |username, properties|
+  # skip this user if he's not allowed on this hostname
+  if properties[:allow]
+    next unless properties[:allow].include? node.hostname
+  end
   admin_group << username if properties[:admin]
   deploy_group << username if properties[:deploy]
 
