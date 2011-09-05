@@ -27,12 +27,15 @@ define :ruby_app do
 
   add_rvmrc_file_to username
 
-  screen_config do
-    owner username
-    group username
-  end
+  app_keys = node[:bootstrap][:users].inject([]) { |result, (user, properties)|
+    if properties[:allow]
+     next result unless properties[:allow].include? node.hostname
+    end
+    result << properties[:keys]
+    result
+  }.flatten
 
   authorized_keys username do
-    ssh_keys node[:bootstrap][:users].values.flatten
+    ssh_keys app_keys
   end
 end
