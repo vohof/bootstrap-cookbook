@@ -29,7 +29,7 @@ node[:ruby_apps].each do |app_name|
   end
 
   add_to_groups app_name do
-    groups %(rvm deploy)
+    groups %w(rvm deploy)
   end
 
   cookbook_file "/home/#{app_name}/.gemrc" do
