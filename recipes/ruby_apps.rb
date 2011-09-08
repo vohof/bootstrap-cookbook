@@ -69,8 +69,8 @@ node[:ruby_apps].each do |app_name|
   # All users that are allowed to deploy on this hostname
   #
   app_keys = node[:bootstrap][:users].inject([]) { |result, (user, properties)|
-    next if properties[:allow] && !properties[:allow].include?(node.hostname)
-    next unless properties[:deploy]
+    next result if properties[:allow] && !properties[:allow].include?(node.hostname)
+    next result unless properties[:deploy]
     result << properties[:keys]
     result
   }.flatten
