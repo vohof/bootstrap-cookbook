@@ -32,34 +32,34 @@ node[:ruby_apps].each do |app_name|
     groups %(rvm deploy)
   end
 
-  cookbook_file "/home/#{username}/.gemrc" do
+  cookbook_file "/home/#{app_name}/.gemrc" do
     cookbook "bootstrap"
     source "gemrc"
-    owner  username
-    group  username
+    owner  app_name
+    group  app_name
     mode   "0644"
   end
 
   # Rails & Rack related
   #
-  add_to_profile username do
+  add_to_profile app_name do
     match "RAILS_ENV"
     string "export RAILS_ENV=production"
   end
 
-  add_to_profile username do
+  add_to_profile app_name do
     match "RACK_ENV"
     string "export RACK_ENV=production"
   end
 
-  add_to_profile username do
+  add_to_profile app_name do
     match "APP_ENV"
     string "export APP_ENV=production"
   end
 
   # RVM related
   #
-  add_to_profile username do
+  add_to_profile app_name do
     match "rvm"
     string "source '#{node[:rvm_script]}'"
   end
@@ -75,7 +75,7 @@ node[:ruby_apps].each do |app_name|
     result
   }.flatten
 
-  authorized_keys username do
+  authorized_keys app_name do
     ssh_keys app_keys
   end
 
