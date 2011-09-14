@@ -79,5 +79,5 @@ node[:ruby_apps].each do |app_name|
     ssh_keys app_keys
   end
 
-	logrotate app_name
+  logrotate app_name
 end
