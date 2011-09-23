@@ -38,11 +38,6 @@ node[:bootstrap][:users].each do |username, properties|
     shell     '/bin/bash'
   end
 
-  screen_config "/home/#{username}/.screenrc" do
-    owner username
-    group username
-  end
-
   bash_aliases "/home/#{username}/.bash_aliases" do
     owner username
     group username

@@ -87,7 +87,6 @@ cookbook_file "/usr/local/bin/memory_stats" do
   mode 0755
 end
 
-screen_config "/root/.screenrc"
 bash_aliases "/root/.bash_aliases"
 
 gem_package "net-ssh"
