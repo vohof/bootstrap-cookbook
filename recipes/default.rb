@@ -89,6 +89,3 @@ end
 
 bash_aliases "/root/.bash_aliases"
 
-gem_package "net-ssh"
-gem_package "rake"
-gem_package "bundler"
