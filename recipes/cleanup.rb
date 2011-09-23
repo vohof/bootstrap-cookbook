@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 
-node[:bootstrap][:cleanup].each do |pkg|
+node[:remove_packages].each do |pkg|
   package pkg do
     action :remove
   end
