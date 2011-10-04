@@ -1,3 +1,3 @@
 execute 'Setting up UFW' do
-  command node[:bootstrap][:firewall].join("\n")
+  command node[:firewall].join("\n")
 end
