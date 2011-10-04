@@ -1,10 +1,16 @@
 include_recipe "rvm"
 
-node[:ruby_apps].each do |app_name|
+node[:ruby_apps].each do |app_name, properties|
   user app_name do
     supports  :manage_home => true
     home      "/home/#{app_name}"
     shell     '/bin/bash'
+  end
+
+  directory "/home/#{app_name}" do
+    owner app_name
+    group app_name
+    mode 0750
   end
 
   add_to_groups app_name do
@@ -45,12 +51,30 @@ node[:ruby_apps].each do |app_name|
 
   rvmrc_file app_name
 
-  # All users that are allowed to deploy on this hostname
+  # Passenger as the server for now
   #
-  app_keys = node[:bootstrap][:users].inject([]) { |result, (user, properties)|
-    next result if properties[:allow] && !properties[:allow].include?(node.hostname)
-    next result unless properties[:deploy]
-    result << properties[:keys]
+  if properties[:passenger]
+    execute "a2enmod proxy" do
+      notifies :restart, resources(:service => 'apache2')
+    end
+
+    web_app properties[:domain] do
+      template      "app.conf.erb"
+      cookbook      "hosting"
+      user          app_name
+      port          properties[:port]
+      aliases       properties[:aliases]
+      rewrites      properties[:rewrites]
+      noncanonical  properties[:noncanonical]
+    end
+  end
+
+  # All users that are allowed to deploy
+  #
+  app_keys = node[:rvm_users].inject([]) { |result, user|
+    if user_properties = node[:system_users][user]
+      result << user_properties[:keys]
+    end
     result
   }.flatten
 
