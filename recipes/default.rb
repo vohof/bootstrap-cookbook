@@ -67,7 +67,3 @@ cookbook_file "/usr/local/bin/memory_stats" do
 end
 
 bash_aliases "/root/.bash_aliases"
-
-authorized_keys "root" do
-  ssh_keys node[:ssh_keys]
-end
