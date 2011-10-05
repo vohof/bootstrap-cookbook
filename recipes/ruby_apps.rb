@@ -51,6 +51,8 @@ node[:ruby_apps].each do |app_name, properties|
 
   rvmrc_file app_name
 
+  rvm_profile app_name
+
   # Passenger as the server for now
   #
   if properties[:passenger]
@@ -66,6 +68,10 @@ node[:ruby_apps].each do |app_name, properties|
       aliases       properties[:aliases]
       rewrites      properties[:rewrites]
       noncanonical  properties[:noncanonical]
+    end
+
+    add_to_groups app_name do
+      groups %w(www-data)
     end
   end
 

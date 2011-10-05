@@ -22,9 +22,13 @@ node[:system_users].each do |username, properties|
     password  user_password
   end
 
+  add_to_groups username do
+    groups %w(www-data)
+  end
+
   directory user_home do
     owner username
-    group username
+    group "www-data"
     mode 0750
   end
 
