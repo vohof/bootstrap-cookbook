@@ -10,7 +10,7 @@ node[:ruby_apps].each do |app_name, properties|
   directory "/home/#{app_name}" do
     owner app_name
     group app_name
-    mode 0750
+    mode 0755
   end
 
   add_to_groups app_name do
