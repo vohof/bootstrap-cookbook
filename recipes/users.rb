@@ -17,7 +17,7 @@ node[:system_users].each do |username, properties|
 
   user username do
     supports  :manage_home => true
-    home      properties[:home]
+    home      user_home
     shell     "/bin/bash"
     password  user_password
   end
@@ -42,14 +42,20 @@ node[:system_users].each do |username, properties|
   end
 end
 
+# Add all admin users to this group
+#
 group 'admin' do
   members admin_group
 end
 
+# Add all admin user keys to root
+#
 authorized_keys "root" do
   ssh_keys root_keys
 end
 
+# Add all users that can deploy to this group
+#
 group 'deploy' do
   members deploy_group
 end
