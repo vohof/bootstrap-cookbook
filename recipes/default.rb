@@ -47,7 +47,7 @@ package "dstat"
 package "lm-sensors"
 package "hddtemp"
 package "pwgen"
-package "monkeytail"
+package "traceroute"
 
 package "bind9-host"
 package "ntp"
