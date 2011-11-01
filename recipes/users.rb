@@ -13,7 +13,7 @@ node[:system_users].each do |username, properties|
 
   user_home = properties[:home] || "/home/#{username}"
 
-  user_password = properties[:password] ? %x{openssl passwd -1 #{properties[:password]}}.chomp : ''
+  user_password = properties[:password] ? %x{openssl passwd -1 '#{properties[:password]}'}.chomp : ''
 
   user username do
     supports  :manage_home => true
