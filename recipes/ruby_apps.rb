@@ -53,27 +53,20 @@ node[:ruby_apps].each do |app_name, properties|
 
   rvm_profile app_name
 
-  # Passenger as the server for now
-  #
-  if properties[:passenger]
-    execute "a2enmod proxy" do
-      notifies :restart, resources(:service => 'apache2')
-    end
-
-    web_app properties[:domain] do
-      template      "app.conf.erb"
-      cookbook      "hosting"
-      user          app_name
-      port          properties[:port]
-      aliases       properties[:aliases]
-      rewrites      properties[:rewrites]
-      noncanonical  properties[:noncanonical]
-    end
-
-    add_to_groups app_name do
-      groups %w(www-data)
-    end
+  web_app properties[:domain] do
+    template      "app.conf.erb"
+    cookbook      "hosting"
+    user          app_name
+    port          properties[:port]
+    aliases       properties[:aliases]
+    rewrites      properties[:rewrites]
+    noncanonical  properties[:noncanonical]
+    path          properties[:path]
   end
+
+  # add_to_groups app_name do
+  #   groups %w(www-data)
+  # end
 
   # All users that are allowed to deploy
   #
