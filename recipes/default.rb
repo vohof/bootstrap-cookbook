@@ -48,6 +48,7 @@ package "lm-sensors"
 package "hddtemp"
 package "pwgen"
 package "traceroute"
+package "whois"
 
 package "bind9-host"
 package "ntp"
