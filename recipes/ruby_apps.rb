@@ -40,6 +40,22 @@ node[:ruby_apps].each do |app_name|
     mode   "0644"
   end
 
+  cookbook_file "/home/#{app_name}/.bashrc" do
+    cookbook "bootstrap"
+    source "bashrc"
+    owner  app_name
+    group  app_name
+    mode   "0644"
+  end
+
+  cookbook_file "/home/#{app_name}/.profile" do
+    cookbook "bootstrap"
+    source "profile"
+    owner  app_name
+    group  app_name
+    mode   "0644"
+  end
+
   # Rails & Rack related
   #
   add_to_profile app_name do
