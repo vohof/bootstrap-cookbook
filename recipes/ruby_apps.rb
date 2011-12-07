@@ -1,31 +1,16 @@
-#
-# Cookbook Name:: bootstrap
-# Recipe:: ruby_apps
-#
-# Author:: Gerhard Lazu (<gerhard@lazu.co.uk>)
-#
-# Copyright 2011, Gerhard Lazu
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
 include_recipe "rvm"
 
-node[:ruby_apps].each do |app_name|
+node[:ruby_apps].each do |app_name, properties|
   user app_name do
     supports  :manage_home => true
     home      "/home/#{app_name}"
     shell     '/bin/bash'
+  end
+
+  directory "/home/#{app_name}" do
+    owner app_name
+    group app_name
+    mode 0755
   end
 
   add_to_groups app_name do
@@ -82,12 +67,29 @@ node[:ruby_apps].each do |app_name|
 
   rvmrc_file app_name
 
-  # All users that are allowed to deploy on this hostname
+  rvm_profile app_name
+
+  web_app properties[:domain] do
+    template      "app.conf.erb"
+    cookbook      "apache2"
+    user          app_name
+    port          properties[:port]
+    aliases       properties[:aliases]
+    rewrites      properties[:rewrites]
+    noncanonical  properties[:noncanonical]
+    path          properties[:path]
+  end
+
+  # add_to_groups app_name do
+  #   groups %w(www-data)
+  # end
+
+  # All users that are allowed to deploy
   #
-  app_keys = node[:bootstrap][:users].inject([]) { |result, (user, properties)|
-    next result if properties[:allow] && !properties[:allow].include?(node.hostname)
-    next result unless properties[:deploy]
-    result << properties[:keys]
+  app_keys = node[:rvm_users].inject([]) { |result, user|
+    if user_properties = node[:system_users][user]
+      result << user_properties[:keys]
+    end
     result
   }.flatten
 
