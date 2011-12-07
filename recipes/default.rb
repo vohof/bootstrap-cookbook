@@ -3,62 +3,38 @@ when "debian", "ubuntu"
   include_recipe "apt"
 end
 
-# should make these configurable really...
-package "vim"
-package "curl"
-package "ack-grep"
-package "screen"
-package "tree"
-package "file"
-package "gawk"
-package "patch"
-package "mc"
-
-package "strace"
-package "lsof"
-package "htop"
-package "iftop"
-package "ethtool"
-package "vnstat"
-package "logrotate"
-package "sysstat"
-package "dstat"
-package "lm-sensors"
-package "hddtemp"
-package "pwgen"
-package "traceroute"
-package "whois"
-
-package "bind9-host"
-package "ntp"
-package "ntpdate"
-
-package "bzip2"
-package "zip"
-package "unzip"
-package "unrar" do
-  not_if "[ $(apt-cache show unrar | grep -c unrar) -lt 1 ]"
+if Chef::Util.respond_to?(:wan_up?)
+  skip = Chef::Util.wan_up? ? false : true
+else
+  skip = false
 end
 
-package "lynx"
-package "tmux"
+unless skip
+  node.bootstrap.packages.each do |group, packages|
+    packages.each do |name|
+      package name do
+        only_if "[ $(apt-cache show #{name} | grep -c #{name}) -gt 0 ]"
+      end
+    end
+  end
 
-# configure vnstat
-execute "Ensure vnstat has a database for eth0" do
-  command "vnstat -u -i eth0"
-  not_if "test -f /var/lib/vnstat/eth0"
-end
-execute "Ensure vnstat daemon is running" do
-  command "/etc/init.d/vnstat start"
-  not_if "ps aux | grep [v]nstat"
-end
+  # configure vnstat
+  execute "Ensure vnstat has a database for eth0" do
+    command "vnstat -u -i eth0"
+    not_if "test -f /var/lib/vnstat/eth0"
+  end
+  execute "Ensure vnstat daemon is running" do
+    command "/etc/init.d/vnstat start"
+    not_if "ps aux | grep [v]nstat"
+  end
 
-# enable sysstat logging
-ruby_block "Ensure sar logging is enabled" do
-  block do
-    sysstat = Chef::Util::FileEdit.new("/etc/default/sysstat")
-    sysstat.search_file_replace_line('ENABLED="false"', 'ENABLED="true"')
-    sysstat.write_file
+  # enable sysstat logging
+  ruby_block "Ensure sar logging is enabled" do
+    block do
+      sysstat = Chef::Util::FileEdit.new("/etc/default/sysstat")
+      sysstat.search_file_replace_line('ENABLED="false"', 'ENABLED="true"')
+      sysstat.write_file
+    end
   end
 end
 
