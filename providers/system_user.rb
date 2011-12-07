@@ -10,8 +10,8 @@ action :create do
   end
 
   directory user_home do
-    owner new_resource.name
-    group new_resource.home_group || new_resource.name
+    owner (new_resource.groups.include?("sftp") ? "root" : new_resource.name)
+    group (new_resource.groups.include?("sftp") ? "root" : (new_resource.home_group || new_resource.name))
     mode new_resource.home_permission
   end
 
@@ -27,10 +27,12 @@ action :create do
 
   ssh_authorized_keys new_resource.name do
     ssh_keys new_resource.ssh_keys
+    home user_home
   end
 
   bootstrap_user_groups new_resource.name do
     groups new_resource.groups
+    allows new_resource.allows
   end
 end
 
