@@ -1,73 +1,10 @@
 include_recipe "rvm"
 
 node[:ruby_apps].each do |app_name, properties|
-  user app_name do
-    supports  :manage_home => true
-    home      "/home/#{app_name}"
-    shell     '/bin/bash'
+  bootstrap_system_user app_name do
+    name app_name
+    groups %w[rvm deploy]
   end
-
-  directory "/home/#{app_name}" do
-    owner app_name
-    group app_name
-    mode 0755
-  end
-
-  add_to_groups app_name do
-    groups %w(rvm deploy)
-  end
-
-  cookbook_file "/home/#{app_name}/.gemrc" do
-    cookbook "bootstrap"
-    source "gemrc"
-    owner  app_name
-    group  app_name
-    mode   "0644"
-  end
-
-  cookbook_file "/home/#{app_name}/.bashrc" do
-    cookbook "bootstrap"
-    source "bashrc"
-    owner  app_name
-    group  app_name
-    mode   "0644"
-  end
-
-  cookbook_file "/home/#{app_name}/.profile" do
-    cookbook "bootstrap"
-    source "profile"
-    owner  app_name
-    group  app_name
-    mode   "0644"
-  end
-
-  # Rails & Rack related
-  #
-  add_to_profile app_name do
-    match "RAILS_ENV"
-    string "export RAILS_ENV=production"
-  end
-
-  add_to_profile app_name do
-    match "RACK_ENV"
-    string "export RACK_ENV=production"
-  end
-
-  add_to_profile app_name do
-    match "APP_ENV"
-    string "export APP_ENV=production"
-  end
-
-  # RVM related
-  #
-  add_to_profile app_name do
-    match "rvm"
-    string "source '#{node[:rvm_script]}'"
-  end
-
-  rvmrc_file app_name
-
-  rvm_profile app_name
 
   web_app properties[:domain] do
     template      "app.conf.erb"
