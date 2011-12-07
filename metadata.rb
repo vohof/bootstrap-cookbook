@@ -4,6 +4,6 @@ license          "Apache 2.0"
 description      "Default bootstrap tasks"
 version          "1.1.0"
 
-depends "apt"
-depends "ssh"
-depends "rvm"
+depends "apt" # https://github.com/gchef/apt-cookbook
+depends "ssh" # https://github.com/gchef/ssh-cookbook
+depends "rvm" # https://github.com/gchef/rvm-cookbook
