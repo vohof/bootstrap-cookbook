@@ -55,7 +55,7 @@ node[:ruby_apps].each do |app_name, properties|
 
   web_app properties[:domain] do
     template      "app.conf.erb"
-    cookbook      "hosting"
+    cookbook      "apache2"
     user          app_name
     port          properties[:port]
     aliases       properties[:aliases]
