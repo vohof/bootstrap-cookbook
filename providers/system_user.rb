@@ -34,8 +34,8 @@ action :create do
 
     cookbook_file "#{user_home}/.profile" do
       source "profile"
-      owner  app_name
-      group  app_name
+      owner  new_resource.name
+      group  new_resource.name
       mode   "0644"
       backup false
       action :create_if_missing
@@ -55,9 +55,9 @@ action :create do
 
   if new_resource.groups.include?("rvm")
     file "#{user_home}/.gemrc" do
-      source "gemrc"
-      owner  app_name
-      group  app_name
+      owner  new_resource.name
+      group  new_resource.name
+      content "gem: --no-user-install --no-ri --no-rdoc"
       mode   "0644"
     end
 
@@ -75,17 +75,17 @@ action :create do
       backup false
     end
 
-    bootstrap_profile app_name do
+    bootstrap_profile new_resource.name do
       match "export RAILS_ENV"
       string "export RAILS_ENV=production"
     end
 
-    bootstrap_profile app_name do
+    bootstrap_profile new_resource.name do
       match "export RACK_ENV"
       string "export RACK_ENV=production"
     end
 
-    bootstrap_profile app_name do
+    bootstrap_profile new_resource.name do
       match "export APP_ENV"
       string "export APP_ENV=production"
     end
