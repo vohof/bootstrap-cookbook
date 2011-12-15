@@ -12,6 +12,7 @@ package "tree"
 package "file"
 package "gawk"
 package "patch"
+package "mc"
 
 package "strace"
 package "lsof"
