@@ -69,3 +69,6 @@ cookbook_file "/usr/local/bin/memory_stats" do
 end
 
 bash_aliases "/root/.bash_aliases"
+
+
+include_recipe "bootstrap::hostname" if node.host

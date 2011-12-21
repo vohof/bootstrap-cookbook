@@ -6,7 +6,7 @@ bash "Setting hostname to #{node.host}" do
   only_if "[ $(hostname) != #{node.host} ]"
 end
 
-host "Assigning #{node.host} as the hostname" do
-  search eval("/^#{node.ipaddress}/")
-  replace "#{node.ipaddress}\t#{node.host}"
+bash "#{node.host} is localhost" do
+  code %{echo "127.0.0.1 #{node.host}" >> /etc/hosts}
+  only_if "[ $(egrep -c '^127\.0\.0\.1.+#{node.host}$' /etc/hosts) -eq 0 ]"
 end
