@@ -1,13 +1,12 @@
-bash "Setting hostname to #{node.fqdn}" do
+bash "Setting hostname to #{node.host}" do
   code %{
-    if [ $HOSTNAME != #{node.fqdn} ]; then
-      echo #{node.fqdn} > /etc/hostname
-      hostname -F /etc/hostname
-    fi
+    echo #{node.host} > /etc/hostname
+    hostname -F /etc/hostname
   }
+  only_if "[ $(hostname) != #{node.host} ]"
 end
 
-host "Assigning #{node.fqdn} as the hostname" do
+host "Assigning #{node.host} as the hostname" do
   search eval("/^#{node.ipaddress}/")
-  replace "#{node.ipaddress}\t#{node.fqdn}"
+  replace "#{node.ipaddress}\t#{node.host}"
 end
