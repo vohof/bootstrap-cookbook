@@ -42,6 +42,11 @@ action :create do
     end
   end
 
+  ssh_authorized_keys new_resource.name do
+    ssh_keys new_resource.ssh_keys
+    home user_home
+  end
+
   cookbook_file "#{user_home}/.ssh/config" do
     source "ssh_config"
     owner  new_resource.name
@@ -49,11 +54,6 @@ action :create do
     mode   "0644"
     backup false
     action :create_if_missing
-  end
-
-  ssh_authorized_keys new_resource.name do
-    ssh_keys new_resource.ssh_keys
-    home user_home
   end
 
   bootstrap_user_groups new_resource.name do
