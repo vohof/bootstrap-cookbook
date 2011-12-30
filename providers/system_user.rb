@@ -40,7 +40,15 @@ action :create do
       backup false
       action :create_if_missing
     end
+  end
 
+  cookbook_file "#{user_home}/.ssh/config" do
+    source "ssh_config"
+    owner  new_resource.name
+    group  new_resource.name
+    mode   "0644"
+    backup false
+    action :create_if_missing
   end
 
   ssh_authorized_keys new_resource.name do
