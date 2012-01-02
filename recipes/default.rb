@@ -47,4 +47,4 @@ end
 bash_aliases "/root/.bash_aliases"
 
 
-include_recipe "bootstrap::hostname" if node.host
+include_recipe "bootstrap::hostname" if node.respond_to?(:host)
