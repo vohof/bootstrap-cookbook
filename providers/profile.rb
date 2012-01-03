@@ -1,15 +1,15 @@
 action :add do
-    bash "Adding to #{new_resource.username}'s profile" do
-      code %{
-        if [ $(grep -c "#{new_resource.string}" #{@@user.profile}) = 0 ]; then
-          if [[ $(cat #{@@user.profile}) =~ "#{new_resource.match}" ]]; then
-            sed -i "s/#{new_resource.match}.*/#{new_resource.string}/g" #{@@user.profile}
-          else
-            echo "#{new_resource.string}" >> #{@@user.profile}
-          fi
+  bash "Adding to #{new_resource.username}'s profile" do
+    code %{
+      if [ $(grep -c "#{new_resource.string}" #{@@user.profile}) = 0 ]; then
+        if [[ $(cat #{@@user.profile}) =~ "#{new_resource.match}" ]]; then
+          sed -i "s/#{new_resource.match}.*/#{new_resource.string}/g" #{@@user.profile}
+        else
+          echo "#{new_resource.string}" >> #{@@user.profile}
         fi
-      }
-    end
+      fi
+    }
+  end
 end
 
 action :remove do
