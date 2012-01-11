@@ -8,6 +8,19 @@ default[:bootstrap][:packages][:install] = [
                 # also highlights matches to help you see where the match was. Ack uses
                 # perl regular expressions.
 
+  'apache2-utils',  # Description: utility programs for webservers
+                    # Provides some add-on programs useful for any webserver.  These include:
+                    # - ab (Apache benchmark tool)
+                    # - logresolve (Resolve IP addresses to hostname in logfiles)
+                    # - htpasswd (Manipulate basic authentication files)
+                    # - htdigest (Manipulate digest authentication files)
+                    # - dbmmanage (Manipulate basic authentication files in DBM format, using perl)
+                    # - htdbm (Manipulate basic authentication files in DBM format, using APR)
+                    # - rotatelogs (Periodically stop writing to a logfile and open a new one)
+                    # - split-logfile (Split a single log including multiple vhosts)
+                    # - checkgid (Checks whether the caller can setgid to the specified group)
+                    # - check_forensic (Extract mod_log_forensic output from Apache log files)
+
   'bind9-host', # This package provides the 'host' program in the form that is bundled with
                 # the BIND 9.X sources. This version differs from the one provided in the
                 # package called host, which is from NIKHEF, and has a similar but different
