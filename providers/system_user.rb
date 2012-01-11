@@ -1,108 +1,98 @@
 action :create do
-  user_password = new_resource.password.empty? ? '' : %x{openssl passwd -1 '#{new_resource.password}'}.chomp
-  user_home = "#{new_resource.home_basepath}/#{new_resource.name}"
-
-  directory user_home do
-    owner (new_resource.groups.include?("sftp") ? "root" : new_resource.name)
-    group (new_resource.groups.include?("sftp") ? "root" : (new_resource.home_group || new_resource.name))
+  directory @@user.home do
+    owner @@user.home_owner
+    group @@user.home_group
     mode new_resource.home_permission
     recursive true
   end
 
-  user new_resource.name do
-    supports  :manage_home => true
-    home      user_home
-    shell     new_resource.shell
-    password  user_password
+  user @@user.name do
+    supports :manage_home => true
+    home @@user.home
+    shell @@user.shell
+    password  @@user.password
   end
 
-  if new_resource.shell.include?("bash")
-    cookbook_file "#{user_home}/.bashrc" do
-      cookbook "bootstrap"
-      source "bashrc"
-      owner  new_resource.name
-      group  new_resource.name
-      mode   "0644"
-      backup false
-    end
-
-    cookbook_file "#{user_home}/.bash_aliases" do
-      cookbook "bootstrap"
-      source "bash_aliases"
-      owner new_resource.name
-      group new_resource.name
-      mode "0644"
-      backup false
-    end
-
-    cookbook_file "#{user_home}/.profile" do
-      cookbook "bootstrap"
-      source "profile"
-      owner  new_resource.name
-      group  new_resource.name
-      mode   "0644"
-      backup false
-      action :create_if_missing
-    end
-  end
-
-  ssh_authorized_keys new_resource.name do
+  ssh_authorized_keys @@user.name do
     ssh_keys new_resource.ssh_keys
-    home user_home
+    home @@user.home
   end
 
-  cookbook_file "#{user_home}/.ssh/config" do
+  cookbook_file "#{@@user.home}/.ssh/config" do
     cookbook "bootstrap"
     source "ssh_config"
-    owner  new_resource.name
-    group  new_resource.name
-    mode   "0644"
+    owner @@user.name
+    group @@user.name
+    mode "0644"
     backup false
     action :create_if_missing
   end
 
-  bootstrap_user_groups new_resource.name do
+  bootstrap_user_groups @@user.name do
     groups new_resource.groups
     allows new_resource.allows
   end
 
   if new_resource.groups.include?("rvm")
-    file "#{user_home}/.gemrc" do
-      owner  new_resource.name
-      group  new_resource.name
+    file "#{@@user.home}/.gemrc" do
+      owner @@user.name
+      group @@user.name
       content "gem: --no-user-install --no-ri --no-rdoc"
-      mode   "0644"
+      mode "0644"
     end
 
-    bootstrap_profile new_resource.name do
-      match "source '#{node.rvm_script}'"
-      string "source '#{node.rvm_script}'"
-    end
-
-    template "#{user_home}/.rvmrc" do
+    template "#{@@user.home}/.rvmrc" do
       cookbook "rvm"
       source "rvmrc.erb"
-      owner new_resource.name
-      group new_resource.name
+      owner @@user.name
+      group @@user.name
       mode "0644"
       backup false
     end
 
-    bootstrap_profile new_resource.name do
-      match "export RAILS_ENV"
-      string "export RAILS_ENV=production"
-    end
-
-    bootstrap_profile new_resource.name do
-      match "export RACK_ENV"
-      string "export RACK_ENV=production"
-    end
-
-    bootstrap_profile new_resource.name do
-      match "export APP_ENV"
-      string "export APP_ENV=production"
+    bootstrap_profile "rvm" do
+      user @@user
+      params([
+        "[ -f #{node.rvm_script} ] && . '#{node.rvm_script}'",
+        "export RAILS_ENV=production",
+        "export RACK_ENV=production",
+        "export APP_ENV=production"
+      ])
     end
   end
+
+  if @@user.shell.include?("bash")
+    cookbook_file "#{@@user.home}/.bashrc" do
+      cookbook "bootstrap"
+      source "bashrc"
+      owner @@user.name
+      group @@user.name
+      mode "0644"
+      backup false
+      action :create_if_missing
+    end
+
+    cookbook_file "#{@@user.home}/.bash_aliases" do
+      cookbook "bootstrap"
+      source "bash_aliases"
+      owner @@user.name
+      group @@user.name
+      mode "0644"
+      backup false
+      action :create_if_missing
+    end
+
+    cookbook_file "#{@@user.home}/.profile" do
+      cookbook "bootstrap"
+      source "profile"
+      owner @@user.name
+      group @@user.name
+      mode "0644"
+      backup false
+      action :create_if_missing
+    end
+  end
+
 end
 
 action :disable do
@@ -111,4 +101,8 @@ end
 
 action :delete do
 
+end
+
+def load_current_resource
+  @@user = Bootstrap::User.new(new_resource, node)
 end
