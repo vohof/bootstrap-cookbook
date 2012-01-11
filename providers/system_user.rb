@@ -2,6 +2,13 @@ action :create do
   user_password = new_resource.password.empty? ? '' : %x{openssl passwd -1 '#{new_resource.password}'}.chomp
   user_home = "#{new_resource.home_basepath}/#{new_resource.name}"
 
+  directory user_home do
+    owner (new_resource.groups.include?("sftp") ? "root" : new_resource.name)
+    group (new_resource.groups.include?("sftp") ? "root" : (new_resource.home_group || new_resource.name))
+    mode new_resource.home_permission
+    recursive true
+  end
+
   user new_resource.name do
     supports  :manage_home => true
     home      user_home
@@ -9,14 +16,9 @@ action :create do
     password  user_password
   end
 
-  directory user_home do
-    owner (new_resource.groups.include?("sftp") ? "root" : new_resource.name)
-    group (new_resource.groups.include?("sftp") ? "root" : (new_resource.home_group || new_resource.name))
-    mode new_resource.home_permission
-  end
-
   if new_resource.shell.include?("bash")
     cookbook_file "#{user_home}/.bashrc" do
+      cookbook "bootstrap"
       source "bashrc"
       owner  new_resource.name
       group  new_resource.name
@@ -25,6 +27,7 @@ action :create do
     end
 
     cookbook_file "#{user_home}/.bash_aliases" do
+      cookbook "bootstrap"
       source "bash_aliases"
       owner new_resource.name
       group new_resource.name
@@ -33,6 +36,7 @@ action :create do
     end
 
     cookbook_file "#{user_home}/.profile" do
+      cookbook "bootstrap"
       source "profile"
       owner  new_resource.name
       group  new_resource.name
@@ -48,6 +52,7 @@ action :create do
   end
 
   cookbook_file "#{user_home}/.ssh/config" do
+    cookbook "bootstrap"
     source "ssh_config"
     owner  new_resource.name
     group  new_resource.name
