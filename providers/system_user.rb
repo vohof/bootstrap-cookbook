@@ -1,8 +1,7 @@
 action :create do
+
+  # You can just put in there, for other files to be created though
   directory @@user.home do
-    owner @@user.home_owner
-    group @@user.home_group
-    mode new_resource.home_permission
     recursive true
   end
 
@@ -11,6 +10,14 @@ action :create do
     home @@user.home
     shell @@user.shell
     password  @@user.password
+  end
+
+  # You can't create a folder owned by a specific user before that user even
+  # exists !! ^^^ check line 3
+  directory @@user.home do
+    owner @@user.home_owner
+    group @@user.home_group
+    mode new_resource.home_permission
   end
 
   ssh_authorized_keys @@user.name do
