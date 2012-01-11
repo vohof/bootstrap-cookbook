@@ -10,30 +10,33 @@ else
 end
 
 unless skip
-  node.bootstrap.packages.each do |group, packages|
-    packages.each do |name|
-      package name do
-        only_if "[ $(apt-cache show #{name} | grep -c #{name}) -gt 0 ]"
-      end
+  # install new packages
+  node[:bootstrap][:packages][:install].each do |name|
+    package name do
+      only_if "[ $(apt-cache show #{name} | grep -c #{name}) -gt 0 ]"
     end
   end
 
   # configure vnstat
-  execute "Ensure vnstat has a database for eth0" do
-    command "vnstat -u -i eth0"
-    not_if "test -f /var/lib/vnstat/eth0"
-  end
-  execute "Ensure vnstat daemon is running" do
-    command "/etc/init.d/vnstat start"
-    not_if "ps aux | grep [v]nstat"
+  if node[:bootstrap][:packages][:install].include?("vnstat")
+    execute "Ensure vnstat has a database for eth0" do
+      command "vnstat -u -i eth0"
+      not_if "test -f /var/lib/vnstat/eth0"
+    end
+
+    service "vnstat" do
+      action [:enable, :start]
+    end
   end
 
   # enable sysstat logging
-  ruby_block "Ensure sar logging is enabled" do
-    block do
-      sysstat = Chef::Util::FileEdit.new("/etc/default/sysstat")
-      sysstat.search_file_replace_line('ENABLED="false"', 'ENABLED="true"')
-      sysstat.write_file
+  if node[:bootstrap][:packages][:install].include?("sysstat")
+    ruby_block "Ensure sar logging is enabled" do
+      block do
+        sysstat = Chef::Util::FileEdit.new("/etc/default/sysstat")
+        sysstat.search_file_replace_line('ENABLED="false"', 'ENABLED="true"')
+        sysstat.write_file
+      end
     end
   end
 end
@@ -47,3 +50,9 @@ end
 bash_aliases "/root/.bash_aliases"
 
 include_recipe "bootstrap::hostname" if node.has_key?(:host)
+
+node[:bootstrap][:packages][:remove].each do |name|
+  package name do
+    action :remove
+  end
+end
