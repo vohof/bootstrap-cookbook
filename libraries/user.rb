@@ -19,11 +19,7 @@ module Bootstrap
     end
 
     def password
-      @password ||= if exists?
-        `cat /etc/passwd | awk -F: '/#{@name}/ { print 6 }'`.chomp
-      else
-        resource.password.empty? ? '' : %x{openssl passwd -1 '#{resource.password}'}.chomp
-      end
+      @password ||= resource.password.empty? ? '' : %x{openssl passwd -1 '#{resource.password}'}.chomp
     end
 
     def profile
