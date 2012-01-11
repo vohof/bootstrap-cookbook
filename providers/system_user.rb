@@ -89,7 +89,6 @@ action :create do
       group @@user.name
       mode "0644"
       backup false
-      action :create_if_missing
     end
   end
 
