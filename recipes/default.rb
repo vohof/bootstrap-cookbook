@@ -3,13 +3,7 @@ when "debian", "ubuntu"
   include_recipe "apt"
 end
 
-if Chef::Util.respond_to?(:wan_up?)
-  skip = Chef::Util.wan_up? ? false : true
-else
-  skip = false
-end
-
-unless skip
+if Chef::Extensions.wan_up?
   # install new packages
   node[:bootstrap][:packages][:install].each do |name|
     package name do
