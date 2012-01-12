@@ -1,6 +1,5 @@
 node[:system_users].each do |username, properties|
   bootstrap_system_user username do
-    name              username
     password          properties[:password]
     groups            properties[:groups]
     allows            properties[:allows]

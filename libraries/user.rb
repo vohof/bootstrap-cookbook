@@ -2,12 +2,11 @@ module Bootstrap
   class User
 
     attr_reader :resource, :node, :name
-    attr_accessor :profile_extras
 
     def initialize(resource, node)
       @resource, @node = resource, node
 
-      @name = resource.name
+      @name = resource.username
     end
 
     def home

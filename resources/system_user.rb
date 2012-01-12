@@ -1,6 +1,6 @@
 actions :create, :disable, :delete
 
-attribute :name,             :kind_of => String,  :name_attribute => true
+attribute :username,         :kind_of => String,  :name_attribute => true
 attribute :password,         :kind_of => String,  :default => ''
 attribute :groups,           :kind_of => Array,   :default => []
 attribute :allows,           :kind_of => Array,   :default => []
