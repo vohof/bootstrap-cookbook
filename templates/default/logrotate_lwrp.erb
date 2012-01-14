@@ -1,0 +1,13 @@
+<%= @path %> {
+  <%= @logrotate.rotate -%>
+  <%= "size #{@logrotate.size}" if @logrotate.size %>
+  missingok
+  notifempty
+  copytruncate
+  rotate <%= @logrotate.keep %>
+  compress
+  compresscmd /bin/bzip2
+  uncompresscmd /bin/bunzip2
+  compressext .bz2
+  dateext
+}
