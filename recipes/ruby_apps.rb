@@ -5,7 +5,7 @@ node[:ruby_apps].each do |app_name, app_properties|
   #
   app_keys = node[:system_users].inject([]) { |result, (user, user_properties)|
     if user_properties[:groups].include?("deploy")
-      result << user[:keys]
+      result << user_properties[:keys]
     end
     result
   }.flatten
