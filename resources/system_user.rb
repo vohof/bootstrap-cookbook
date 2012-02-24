@@ -9,6 +9,7 @@ attribute :home_group,       :kind_of => String
 attribute :home_permission,  :kind_of => String,  :default => "0755"
 attribute :shell,            :kind_of => String,  :default => "/bin/bash"
 attribute :ssh_keys,         :kind_of => Array,   :default => []
+attribute :profile,          :kind_of => Array,   :default => []
 
 def initialize(*args)
   super

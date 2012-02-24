@@ -14,6 +14,7 @@ node[:ruby_apps].each do |app_name, app_properties|
     name app_name
     groups %w[rvm deploy]
     ssh_keys app_keys
+    profile app_properties[:profile]
   end
 
   if app_properties[:domain]

@@ -40,6 +40,13 @@ action :create do
     allows new_resource.allows
   end
 
+  if new_resource.profile.any?
+    bootstrap_profile "default" do
+      user @@user
+      params new_resource.profile
+    end
+  end
+
   if new_resource.groups.include?("rvm")
     file "#{@@user.home}/.gemrc" do
       owner @@user.name
