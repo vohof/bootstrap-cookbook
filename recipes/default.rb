@@ -3,6 +3,12 @@ when "debian", "ubuntu"
   include_recipe "apt"
 end
 
+node[:bootstrap][:packages][:remove].each do |name|
+  package name do
+    action :remove
+  end
+end
+
 if Chef::Extensions.wan_up?
   # install new packages
   node[:bootstrap][:packages][:install].each do |name|
@@ -44,9 +50,3 @@ end
 bash_aliases "/root/.bash_aliases"
 
 include_recipe "bootstrap::hostname" if node.has_key?(:host)
-
-node[:bootstrap][:packages][:remove].each do |name|
-  package name do
-    action :remove
-  end
-end
