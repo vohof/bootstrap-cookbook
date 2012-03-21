@@ -88,6 +88,10 @@ default[:bootstrap][:packages][:install] = [
                 # 4 version of UNIX awk. Gawk also provides more recent Bell Labs awk
                 # extensions, and some GNU-specific extensions.
 
+  'gdebi-core', # gdebi lets you install local deb packages resolving and
+                # installing its dependencies. apt does the same, but only for
+                # remote (http, ftp) located packages.
+
   'hddtemp',    #  The hddtemp program monitors and reports the temperature of PATA, SATA
                 # or SCSI hard drives by reading Self-Monitoring Analysis and Reporting
                 # Technology (S.M.A.R.T.) information on drives that support this feature.
