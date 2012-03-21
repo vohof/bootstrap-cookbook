@@ -19,3 +19,11 @@ directory "/mnt" do
 end
 
 package "s3cmd"
+
+template "/root/.s3cfg" do
+  cookbook "bootstrap"
+  source "s3cfg.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+end

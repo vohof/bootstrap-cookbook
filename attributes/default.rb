@@ -270,3 +270,12 @@ default[:bootstrap][:packages][:install] = [
 ]
 
 default[:bootstrap][:packages][:remove] = []
+
+# Used for interacting with AWS
+# Most users will rely on AWS for at least one thing (S3, EC2, Route53 etc.)
+#
+default[:bootstrap][:aws_access_key] = ""
+default[:bootstrap][:aws_secret_key] = ""
+#
+# Used to encrypt content when uploading to S3
+default[:bootstrap][:gpg_passphrase] = "changeme"
