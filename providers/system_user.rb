@@ -117,5 +117,6 @@ action :delete do
 end
 
 def load_current_resource
+  require ::File.expand_path('../../lib/user', __FILE__)
   @@user = Bootstrap::User.new(new_resource, node)
 end
