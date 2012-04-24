@@ -21,7 +21,7 @@ if Chef::Extensions.wan_up?
   if node[:bootstrap][:packages][:install].include?("vnstat")
     execute "Ensure vnstat has a database for eth0" do
       command "vnstat -u -i eth0"
-      not_if "test -f /var/lib/vnstat/eth0"
+      not_if "[ -f /var/lib/vnstat/eth0 ]"
     end
 
     service "vnstat" do
@@ -31,12 +31,14 @@ if Chef::Extensions.wan_up?
 
   # enable sysstat logging
   if node[:bootstrap][:packages][:install].include?("sysstat")
-    ruby_block "Ensure sar logging is enabled" do
-      block do
-        sysstat = Chef::Util::FileEdit.new("/etc/default/sysstat")
-        sysstat.search_file_replace_line('ENABLED="false"', 'ENABLED="true"')
-        sysstat.write_file
-      end
+    bash "Ensure sar logging is enabled" do
+      code %{
+        if [ $(grep -c 'ENABLED="true"' /etc/default/sysstat) = 0 ]
+        then
+          sed -i 's/ENABLED="false"/ENABLED="true"/g' /etc/default/sysstat
+        fi
+        exit 0
+      }
     end
   end
 end
@@ -46,7 +48,5 @@ cookbook_file "/usr/local/bin/memory_stats" do
   source "memory_stats"
   mode 0755
 end
-
-bash_aliases "/root/.bash_aliases"
 
 include_recipe "bootstrap::hostname" if node.has_key?(:host)
