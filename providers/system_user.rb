@@ -83,7 +83,6 @@ action :create do
       group @@user.name
       mode "0644"
       backup false
-      action :create_if_missing
     end
 
     cookbook_file "#{@@user.home}/.bash_aliases" do
@@ -93,7 +92,6 @@ action :create do
       group @@user.name
       mode "0644"
       backup false
-      action :create_if_missing
     end
 
     cookbook_file "#{@@user.home}/.profile" do

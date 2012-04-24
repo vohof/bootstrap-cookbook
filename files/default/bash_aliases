@@ -39,3 +39,5 @@ alias bp="bundle package"
 alias afind='ack-grep -il'
 alias g='grep -in'
 alias a='ack -i'
+
+alias s="sudo $SHELL"
