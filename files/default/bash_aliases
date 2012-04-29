@@ -41,3 +41,4 @@ alias g='grep -in'
 alias a='ack -i'
 
 alias s="sudo $SHELL"
+alias si="sudo -i"
