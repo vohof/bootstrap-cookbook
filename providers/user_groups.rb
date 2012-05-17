@@ -1,7 +1,11 @@
 def add_user_to_group(user, group_name)
   # Creates group if it does not exist
+  # Since chef 0.10.10 all users in this group will get discarded every time
+  # you run this provider with the default action.
   #
-  group group_name
+  group group_name do
+    only_if %{[ $(egrep -ic "^#{group_name}" /etc/group) = 0 ]}
+  end
 
   bash "Adding #{user} to #{group_name} group" do
     code "usermod -a -G #{group_name} #{user}"
