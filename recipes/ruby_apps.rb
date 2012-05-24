@@ -30,6 +30,11 @@ node[:ruby_apps].each do |app_name, app_properties|
     end
   end
 
+  directory "/var/log/#{app_name}" do
+    owner app_name
+    mode "0755"
+  end
+
   # Add logrotation for this ruby app
   # test manually: logrotate -vf /etc/logrotate.d/[app_name]
   logrotate app_name do
