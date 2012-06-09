@@ -15,6 +15,11 @@ node[:apps].each do |app|
     profile app.profile
   end
 
+  directory "/var/log/#{app.name}" do
+    owner app.name
+    mode "0755"
+  end
+
   # test manually: logrotate -vf /etc/logrotate.d/[app_name]
   logrotate app.name do
     paths "/var/log/#{app.name}/*.log"
