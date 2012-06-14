@@ -4,7 +4,7 @@ node[:ruby_apps].each do |app_name, app_properties|
   # All users that are allowed to deploy
   #
   app_keys = node[:system_users].inject([]) { |result, (user, user_properties)|
-    if user_properties[:groups].include?("deploy")
+    if user_properties.fetch(:groups) { [] }.include?("deploy")
       result << user_properties[:keys]
     end
     result
