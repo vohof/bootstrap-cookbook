@@ -1,6 +1,6 @@
 if File.exists?("/home/ubuntu")
   admin_keys = node[:system_users].inject([]) { |result, (user, user_properties)|
-    if user_properties[:groups].include?("admin")
+    if user_properties.fetch(:groups) { [] }.include?("admin")
       result << user_properties[:keys]
     end
     result
