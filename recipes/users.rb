@@ -8,6 +8,7 @@ node[:system_users].each do |username, properties|
     home_group        properties[:home_group]
     shell             properties[:shell]
     ssh_keys          properties[:keys]
+    profile           properties[:profile]
     action            properties[:status]
   end
 end

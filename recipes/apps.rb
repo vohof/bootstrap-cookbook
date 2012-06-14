@@ -9,10 +9,15 @@ node[:apps].each do |app|
   }.flatten
 
   bootstrap_system_user app[:name] do
-    name app[:name]
-    groups (%w[deploy] + app[:groups])
-    ssh_keys users_with_deploy_privileges
-    profile app[:profile]
+    groups            (%w[deploy] + app[:groups])
+    allows            app[:allows]
+    home_basepath     app[:home_basepath]
+    home_permission   app[:home_permission]
+    home_group        app[:home_group]
+    shell             app[:shell]
+    ssh_keys          users_with_deploy_privileges
+    profile           app[:profile]
+    action            app[:status]
   end
 
   directory "/var/log/#{app[:name]}" do
