@@ -107,11 +107,36 @@ action :create do
 end
 
 action :disable do
+  bash "Stopping all #{@@user.name} system user processes" do
+    code %{
+      skill -KILL -u #{@@user.name}
+    }
+  end
 
+  bash "Locking #{@@user.name} system user" do
+    code %{
+      passwd #{@@user.name} -l
+      chown root:root -fR #{@@user.home}/.ssh
+    }
+  end
 end
 
 action :delete do
+  bash "Stopping all #{@@user.name} system user processes" do
+    code %{
+      [[ "$(id #{@@user.name} 2>&1)" =~ "uid" ]] && skill -KILL -u #{@@user.name}
+      exit 0
+    }
+  end
 
+  bash "Deleting #{@@user.name} system user" do
+    code %{
+      test -d #{@@user.home} && rm -fR #{@@user.home}
+      test -d /var/log/#{@@user.name} && rm -fR /var/log/#{@@user.name}
+      [[ "$(id #{@@user.name} 2>&1)" =~ "uid" ]] && userdel #{@@user.name}
+      exit 0
+    }
+  end
 end
 
 def load_current_resource
