@@ -35,6 +35,20 @@ action :create do
     action :create_if_missing
   end
 
+  Chef::Log.debug("[system_user] Git Info: #{@@user.git_name} <#{@@user.git_email}>")
+  if @@user.git_name && @@user.git_email
+    template "#{@@user.home}/.gitconfig" do
+      source "gitconfig.erb"
+      mode "0644"
+      owner @@user.name
+      group @@user.name
+      variables({
+        :name => @@user.git_name,
+        :email => @@user.git_email
+      })
+    end
+  end
+
   bootstrap_user_groups @@user.name do
     groups new_resource.groups
     allows new_resource.allows

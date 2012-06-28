@@ -10,6 +10,8 @@ attribute :home_permission,  :kind_of => String,  :default => "0755"
 attribute :shell,            :kind_of => String,  :default => "/bin/bash"
 attribute :ssh_keys,         :kind_of => Array,   :default => []
 attribute :profile,          :kind_of => Array,   :default => []
+attribute :git_name,				 :kind_of => String,	:default => nil
+attribute :git_email,				 :kind_of => String,	:default => nil
 
 def initialize(*args)
   super
