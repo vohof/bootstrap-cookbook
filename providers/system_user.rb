@@ -25,6 +25,13 @@ action :create do
     home @@user.home
   end
 
+  new_resource.known_hosts.each do |host|
+    ssh_key host do
+      local_known_hosts "#{@@user.home}/.ssh/known_hosts"
+      action :allow
+    end
+  end
+
   cookbook_file "#{@@user.home}/.ssh/config" do
     cookbook "bootstrap"
     source "ssh_config"
@@ -34,17 +41,15 @@ action :create do
     backup false
     action :create_if_missing
   end
-
-  Chef::Log.debug("[system_user] Git Info: #{@@user.git_name} <#{@@user.git_email}>")
-  if @@user.git_name && @@user.git_email
+  
+  if new_resource.git
     template "#{@@user.home}/.gitconfig" do
       source "gitconfig.erb"
       mode "0644"
       owner @@user.name
       group @@user.name
       variables({
-        :name => @@user.git_name,
-        :email => @@user.git_email
+        :git => new_resource.git
       })
     end
   end
