@@ -66,6 +66,13 @@ action :create do
     end
   end
 
+  if new_resource.groups.include?("nvm")
+    bootstrap_profile "nvm" do
+      user @@user
+      params ". #{node[:nvm][:dir]}/nvm.sh"
+    end
+  end
+
   if new_resource.groups.include?("rvm")
     file "#{@@user.home}/.gemrc" do
       owner @@user.name
