@@ -9,6 +9,8 @@ node[:system_users].each do |username, properties|
     shell             properties[:shell]
     ssh_keys          properties[:keys]
     profile           properties[:profile]
+    git               properties[:git]
     action            properties[:status]
+    known_hosts       properties[:known_hosts]
   end
 end
