@@ -25,6 +25,21 @@ action :create do
     home @@user.home
   end
 
+  cookbook_file "#{@@user.home}/.ssh/known_hosts" do
+    owner @@user.name
+    group @@user.name
+    mode "0644"
+    backup false
+    action :create_if_missing
+  end
+
+  new_resource.known_hosts.each do |host|
+    ssh_key host do
+      local_known_hosts "#{@@user.home}/.ssh/known_hosts"
+      action :allow
+    end
+  end
+
   cookbook_file "#{@@user.home}/.ssh/config" do
     cookbook "bootstrap"
     source "ssh_config"
@@ -33,6 +48,18 @@ action :create do
     mode "0644"
     backup false
     action :create_if_missing
+  end
+  
+  if new_resource.git
+    template "#{@@user.home}/.gitconfig" do
+      source "gitconfig.erb"
+      mode "0644"
+      owner @@user.name
+      group @@user.name
+      variables({
+        :git => new_resource.git
+      })
+    end
   end
 
   bootstrap_user_groups @@user.name do
@@ -44,6 +71,13 @@ action :create do
     bootstrap_profile "default" do
       user @@user
       params new_resource.profile
+    end
+  end
+
+  if new_resource.groups.include?("nvm")
+    bootstrap_profile "nvm" do
+      user @@user
+      params [". #{node[:nvm][:dir]}/nvm.sh"]
     end
   end
 
