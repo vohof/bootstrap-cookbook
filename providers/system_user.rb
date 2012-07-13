@@ -25,12 +25,12 @@ action :create do
     home @@user.home
   end
 
-  cookbook_file "#{@@user.home}/.ssh/known_hosts" do
+  file "#{@@user.home}/.ssh/known_hosts" do
     owner @@user.name
     group @@user.name
     mode "0644"
     backup false
-    action :create_if_missing
+    action :create
   end
 
   new_resource.known_hosts.each do |host|
