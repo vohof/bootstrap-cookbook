@@ -279,3 +279,7 @@ default[:bootstrap][:aws_secret_key] = ""
 #
 # Used to encrypt content when uploading to S3
 default[:bootstrap][:gpg_passphrase] = "changeme"
+
+default[:system_users] = {}
+default[:ruby_apps]    = {}
+default[:apps]         = []
