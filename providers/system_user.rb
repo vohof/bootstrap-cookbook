@@ -49,7 +49,7 @@ action :create do
     backup false
     action :create_if_missing
   end
-  
+
   if new_resource.git
     template "#{@@user.home}/.gitconfig" do
       source "gitconfig.erb"
@@ -59,6 +59,16 @@ action :create do
       variables({
         :git => new_resource.git
       })
+    end
+  end
+
+  if new_resource.ssh_private_key && new_resource.ssh_public_key
+    ssh_key "localhost" do
+      username @@user.name
+      home @@user.home
+      private_key new_resource.ssh_private_key
+      public_key new_resource.ssh_public_key
+      action :create
     end
   end
 
