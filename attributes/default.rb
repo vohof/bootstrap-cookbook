@@ -92,11 +92,11 @@ default[:bootstrap][:packages][:install] = [
                 # installing its dependencies. apt does the same, but only for
                 # remote (http, ftp) located packages.
 
-  'hddtemp',    #  The hddtemp program monitors and reports the temperature of PATA, SATA
+  'hddtemp',    # The hddtemp program monitors and reports the temperature of PATA, SATA
                 # or SCSI hard drives by reading Self-Monitoring Analysis and Reporting
                 # Technology (S.M.A.R.T.) information on drives that support this feature.
 
-  'htop',       #  Htop is an ncursed-based process viewer similar to top, but it
+  'htop',       # Htop is an ncursed-based process viewer similar to top, but it
                 # allows to scroll the list vertically and horizontally to see
                 # all processes and their full command lines.
                 # .
