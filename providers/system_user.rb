@@ -153,14 +153,18 @@ end
 action :disable do
   bash "Stopping all #{@@user.name} system user processes" do
     code %{
-      skill -KILL -u #{@@user.name}
+      [[ "$(id #{@@user.name} 2>&1)" =~ "uid" ]] && skill -KILL -u #{@@user.name}
+      exit 0
     }
   end
 
   bash "Locking #{@@user.name} system user" do
     code %{
-      passwd #{@@user.name} -l
-      chown root:root -fR #{@@user.home}/.ssh
+      if [[ "$(id #{@@user.name} 2>&1)" =~ "uid" ]]
+      then
+        passwd #{@@user.name} -l
+        chown root:root -fR #{@@user.home}/.ssh
+      fi
     }
   end
 end
