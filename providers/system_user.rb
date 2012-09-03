@@ -91,7 +91,7 @@ action :create do
     end
   end
 
-  if new_resource.groups.include?("rvm")
+  if new_resource.groups.include?("ruby")
     file "#{@@user.home}/.gemrc" do
       owner @@user.name
       group @@user.name
@@ -99,19 +99,9 @@ action :create do
       mode "0644"
     end
 
-    template "#{@@user.home}/.rvmrc" do
-      cookbook "rvm"
-      source "rvmrc.erb"
-      owner @@user.name
-      group @@user.name
-      mode "0644"
-      backup false
-    end
-
-    bootstrap_profile "rvm" do
+    bootstrap_profile "ruby" do
       user @@user
       params([
-        "[ -f #{node.rvm_script} ] && . '#{node.rvm_script}'",
         "export RAILS_ENV=production",
         "export RACK_ENV=production",
         "export APP_ENV=production"
