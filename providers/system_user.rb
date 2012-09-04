@@ -87,7 +87,7 @@ action :create do
   if new_resource.groups.include?("nvm")
     bootstrap_profile "nvm" do
       user @@user
-      params [". #{node[:nvm][:dir]}/nvm.sh"]
+      params ["if [ -e #{node[:nvm][:dir]}/nvm.sh ]; then . #{node[:nvm][:dir]}/nvm.sh; fi"]
     end
   end
 
@@ -111,7 +111,7 @@ action :create do
     bootstrap_profile "rvm" do
       user @@user
       params([
-        "[ -f #{node.rvm_script} ] && . '#{node.rvm_script}'",
+        "if [ -e #{node[:rvm_script]} ]; then . #{node[:rvm_script]}; fi",
         "export RAILS_ENV=production",
         "export RACK_ENV=production",
         "export APP_ENV=production"
