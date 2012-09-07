@@ -87,7 +87,7 @@ action :create do
   if new_resource.groups.include?("nvm")
     bootstrap_profile "nvm" do
       user @@user
-      params [". #{node[:nvm][:dir]}/nvm.sh"]
+      params ["if [ -e #{node[:nvm][:dir]}/nvm.sh ]; then . #{node[:nvm][:dir]}/nvm.sh; fi"]
     end
   end
 

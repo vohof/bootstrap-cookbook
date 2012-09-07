@@ -44,6 +44,11 @@ default[:bootstrap][:packages][:install] = [
                 # curl offers a busload of useful tricks like proxy support, user
                 # authentication, ftp upload, HTTP post, file transfer resume and more.
 
+  'debconf-utils',  # Contains some small utilities to aid users and developers.
+                    # There are utilities to help manage debconf databases,
+                    # others to manage translated template files and a program to communicate
+                    # directly with debconf from the command line.
+
   'dstat',      # Dstat is a versatile replacement for vmstat, iostat and ifstat. Dstat
                 # overcomes some of the limitations of these programs and adds some
                 # extra features.
