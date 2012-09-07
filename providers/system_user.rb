@@ -91,7 +91,7 @@ action :create do
     end
   end
 
-  if new_resource.groups.include?("ruby")
+  if ((%w[ruby rvm rbenv] & new_resource.groups).length > 0)
     file "#{@@user.home}/.gemrc" do
       owner @@user.name
       group @@user.name
