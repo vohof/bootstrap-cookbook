@@ -18,6 +18,8 @@ node[:apps].each do |app|
     action            app[:status]
   end
 
+  rbenv_user(app[:name]) if node.include?(:rbenv) and app.fetch(:groups) { [] }.include?("rbenv")
+
   unless app[:status] == :delete
     directory "/var/log/#{app[:name]}" do
       owner app[:name]
