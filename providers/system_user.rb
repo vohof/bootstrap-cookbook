@@ -98,15 +98,6 @@ action :create do
       content "gem: --no-user-install --no-ri --no-rdoc"
       mode "0644"
     end
-
-    bootstrap_profile "ruby" do
-      user @@user
-      params([
-        "export RAILS_ENV=production",
-        "export RACK_ENV=production",
-        "export APP_ENV=production"
-      ])
-    end
   end
 
   if @@user.shell.include?("bash")
