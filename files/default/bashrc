@@ -46,13 +46,16 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 # If ubuntu user exists, we're running on EC2
-if [ $(id ubuntu 2>&1 | grep -c uid) -gt 0 ]; then
-  SERVER_IDENTIFIER=`curl -s http://169.254.169.254/latest/meta-data/instance-id`
+if [[ $(id ubuntu 2>&1) =~ "uid" ]]; then
+  SERVER_IDENTIFIER="::$(curl -s http://169.254.169.254/latest/meta-data/instance-id)"
+elif [[ $(id vagrant 2>&1) =~ "uid" ]]; then
+  SERVER_ID="::vagrant"
 else
-  SERVER_IDENTIFIER=`hostname`
+  SERVER_ID=""
 fi
+SERVER_IDENTIFIER="${HOSTNAME}${SERVER_ID}"
 
-if [ "$color_prompt" = yes ]; then
+if [[ "$color_prompt" = yes ]]; then
   PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@${SERVER_IDENTIFIER}\[\033[00m\]\[\033[01;34m\] \w\[\033[00m\] '
 else
   PS1='${debian_chroot:+($debian_chroot)}\u@${SERVER_IDENTIFIER} \w '
