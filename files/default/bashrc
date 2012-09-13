@@ -47,7 +47,7 @@ fi
 
 # If ubuntu user exists, we're running on EC2
 if [[ $(id ubuntu 2>&1) =~ "uid" ]]; then
-  SERVER_IDENTIFIER="::$(curl -s http://169.254.169.254/latest/meta-data/instance-id)"
+  SERVER_ID="::$(curl -s http://169.254.169.254/latest/meta-data/instance-id)"
 elif [[ $(id vagrant 2>&1) =~ "uid" ]]; then
   SERVER_ID="::vagrant"
 else
