@@ -1,13 +1,26 @@
 <%= @path %> {
-  <%= @logrotate.rotate -%>
+  <%= @logrotate.rotate %>
   <%= "size #{@logrotate.size}" if @logrotate.size %>
   missingok
   notifempty
-  copytruncate
+  <%= "copytruncate" if @logrotate.copytruncate %>
   rotate <%= @logrotate.keep %>
   compress
-  compresscmd /bin/bzip2
-  uncompresscmd /bin/bunzip2
-  compressext .bz2
+  delaycrompress
+  compresscmd <%= @logrotate.compresscmd %>
+  uncompresscmd <%= @logrotate.uncompresscmd %>
+  compressext <%= @logrotate.compressext %>
   dateext
+  <%= "create #{@logrotate.permissions}" if @logrotate.permissions %>
+  <%= @logrotate.sharedscripts ? "sharedscripts" : "nosharedscripts" %>
+  <% if @logrotate.prerotate -%>
+  prerotate
+    <%= @logrotate.prerotate %>
+  endscript
+  <%- end -%>
+  <% if @logrotate.postrotate -%>
+  postrotate
+    <%= @logrotate.postrotate %>
+  endscript
+  <%- end -%>
 }
