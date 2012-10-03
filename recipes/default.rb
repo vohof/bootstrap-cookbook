@@ -9,7 +9,9 @@ node[:bootstrap][:packages][:remove].each do |name|
   end
 end
 
-if Chef::Extensions.wan_up?
+wan_up = `ping -c 1 -W 1 google.com`.index(/1 (?:packets )?received/)
+
+if wan_up
   # install new packages
   node[:bootstrap][:packages][:install].each do |name|
     package name do
