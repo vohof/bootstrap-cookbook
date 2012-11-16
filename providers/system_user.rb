@@ -1,5 +1,9 @@
-action :create do
+action :ignore do
+  # Sometimes it is necessary to prevent any changes to a user
+  # For example, when there are multiple provisioners running on the same system
+end
 
+action :create do
   # You can just put in there, for other files to be created though
   directory @@user.home do
     recursive true
@@ -128,7 +132,6 @@ action :create do
       backup false
     end
   end
-
 end
 
 action :disable do

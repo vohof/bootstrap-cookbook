@@ -1,4 +1,4 @@
-actions :create, :disable, :delete
+actions :create, :disable, :delete, :ignore
 
 attribute :username,         :kind_of => String,  :name_attribute => true
 attribute :password,         :kind_of => String,  :default => ''
