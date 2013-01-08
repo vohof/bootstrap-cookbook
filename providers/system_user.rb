@@ -4,11 +4,14 @@ action :ignore do
 end
 
 action :create do
-  # You can just put in there, for other files to be created though
+  # So that other files can be created
+  #
   directory @@user.home do
     recursive true
   end
 
+  # Create user so that we can assign ownership of dirs & files
+  #
   user @@user.name do
     supports :manage_home => true
     home @@user.home
@@ -16,8 +19,8 @@ action :create do
     password  @@user.password
   end
 
-  # You can't create a folder owned by a specific user before that user even
-  # exists !! ^^^ check line 3
+  # Now that the user exists, correct ownership of home dir
+  #
   directory @@user.home do
     owner @@user.home_owner
     group @@user.home_group
@@ -78,6 +81,7 @@ action :create do
 
   bootstrap_user_groups @@user.name do
     groups new_resource.groups
+    notgroups %w[nologin] + new_resource.notgroups
     allows new_resource.allows
   end
 
@@ -148,8 +152,13 @@ action :disable do
       then
         passwd #{@@user.name} -l
         chown root:root -fR #{@@user.home}/.ssh
+        chsh -s /usr/sbin/nologin #{@@user.name}
       fi
     }
+  end
+
+  bootstrap_user_groups @@user.name do
+    groups %w[nologin]
   end
 end
 
