@@ -213,6 +213,11 @@ default[:bootstrap][:packages][:install] = [
                 # utilization, kernel activities and TTY statistics, among
                 # others. Both UP and SMP machines are fully supported.
 
+  'tig',        # ncurses-based Git repository browser
+                # This package contains a text-mode interface for the version
+                # control system Git. It may be used to browse the history and
+                # contents of a repository.
+
   'tmux',       # tmux enables a number of terminals (or windows) to be accessed and
                 # controlled from a single terminal like screen. tmux runs as a
                 # server-client system.  A server is created automatically when
