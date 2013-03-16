@@ -1,3 +1,5 @@
+require ::File.expand_path('../../lib/user.rb', __FILE__)
+
 action :create do
   template "#{@@user.home}/.profile.d/#{new_resource.filename}" do
     cookbook "bootstrap"
