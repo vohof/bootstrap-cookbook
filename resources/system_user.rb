@@ -1,4 +1,5 @@
 actions :create, :disable, :delete, :ignore
+default_action :create
 
 attribute :username,         :kind_of => String,  :name_attribute => true
 attribute :password,         :kind_of => String,  :default => ''
@@ -15,8 +16,3 @@ attribute :ssh_keys,         :kind_of => Array,   :default => []
 attribute :profile,          :kind_of => Array,   :default => []
 attribute :git,              :kind_of => Hash
 attribute :known_hosts,      :kind_of => Array,   :default => []
-
-def initialize(*args)
-  super
-  @action = :create
-end

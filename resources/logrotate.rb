@@ -1,5 +1,6 @@
 # http://linuxcommand.org/man_pages/logrotate8.html
 actions :create, :delete
+default_action :create
 
 attribute :service,       :kind_of => String,  :name_attribute => true
 attribute :path,          :kind_of => String
@@ -14,8 +15,3 @@ attribute :compressext,   :kind_of => String, :default => ".bz2"
 attribute :sharedscripts, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :prerotate,     :kind_of => String
 attribute :postrotate,    :kind_of => String
-
-def initialize(*args)
-  super
-  @action = :create
-end
