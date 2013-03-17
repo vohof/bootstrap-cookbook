@@ -138,6 +138,11 @@ default[:bootstrap][:packages][:install] = [
                 # and NNTP servers. Current versions of Lynx run on Unix, VMS, Windows
                 # 95/NT, 386DOS and OS/2 EMX.
 
+  'nmon',       # nmon is a systems administrator, tuner, benchmark tool.
+                # It can display the CPU, memory, network, disks (mini graphs or numbers),
+                # file systems, NFS, top processes, resources (Linux version & processors) and
+                # on Power micro-partition information.
+
   'ntp',        # NTP, the Network Time Protocol, is used to keep computer clocks
                 # accurate by synchronizing them over the Internet or a local network,
                 # or by following an accurate hardware receiver that interprets GPS,
