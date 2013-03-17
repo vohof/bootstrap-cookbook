@@ -13,7 +13,7 @@ node[:apps].each do |app|
     home_permission   app[:home_permission]
     home_group        app[:home_group]
     shell             app[:shell]
-    ssh_keys          users_with_deploy_privileges
+    ssh_keys          users_with_deploy_privileges + app[:authorized_keys]
     profile           app[:profile]
     action            app[:status]
   end
