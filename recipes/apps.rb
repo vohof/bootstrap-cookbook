@@ -18,7 +18,11 @@ node[:apps].each do |app|
     action            app[:status]
   end
 
-  rbenv_user(app[:name]) if node.include?(:rbenv) and app.fetch(:groups) { [] }.include?("rbenv")
+  if node.include?(:rbenv) && app.fetch(:groups) { [] }.include?("rbenv")
+    rbenv_user app[:name] do
+      home_basepath app[:home_basepath]
+    end
+  end
 
   unless app[:status] == :delete
     directory "/var/log/#{app[:name]}" do
