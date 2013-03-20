@@ -7,13 +7,13 @@ node[:apps].each do |app|
   }.flatten
 
   bootstrap_system_user app[:name] do
-    groups            (%w[deploy] + app.fetch(:groups) { [] })
+    groups            %w[deploy] + app.fetch(:groups, [])
     allows            app[:allows]
     home_basepath     app[:home_basepath]
     home_permission   app[:home_permission]
     home_group        app[:home_group]
     shell             app[:shell]
-    ssh_keys          users_with_deploy_privileges + app[:authorized_keys]
+    ssh_keys          users_with_deploy_privileges + app.fetch(:authorized_keys, [])
     profile           app[:profile]
     action            app[:status]
   end
