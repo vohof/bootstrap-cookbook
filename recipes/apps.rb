@@ -15,6 +15,7 @@ node[:apps].each do |app|
     shell             app[:shell]
     ssh_keys          users_with_deploy_privileges + app.fetch(:authorized_keys, [])
     profile           app[:profile]
+    password          app[:password]
     action            app[:status]
   end
 
