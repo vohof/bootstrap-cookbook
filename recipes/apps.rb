@@ -1,7 +1,7 @@
 node[:apps].each do |app|
   users_with_deploy_privileges = node[:system_users].inject([]) { |result, (user, user_properties)|
     if user_properties.fetch(:groups) { [] }.include?("deploy")
-      result << user_properties[:keys]
+      result << user_properties[:ssh_keys]
     end
     result
   }.flatten
