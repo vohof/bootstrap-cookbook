@@ -1,4 +1,6 @@
 node[:apps].each do |app|
+  app_action = app[:status] || app[:action]
+
   users_with_deploy_privileges = node[:system_users].inject([]) { |result, (user, user_properties)|
     if user_properties.fetch(:groups) { [] }.include?("deploy")
       result << user_properties[:ssh_keys]
@@ -16,16 +18,16 @@ node[:apps].each do |app|
     ssh_keys          users_with_deploy_privileges + app.fetch(:authorized_keys, [])
     profile           app[:profile]
     password          app[:password]
-    action            app[:status]
+    action            app_action
   end
 
-  if node.include?(:rbenv) && app.fetch(:groups) { [] }.include?("rbenv")
-    rbenv_user app[:name] do
-      home_basepath app[:home_basepath]
+  unless app_action == :delete
+    if node.include?(:rbenv) && app.fetch(:groups) { [] }.include?("rbenv")
+      rbenv_user app[:name] do
+        home_basepath app[:home_basepath]
+      end
     end
-  end
 
-  unless app[:status] == :delete
     directory "/var/log/#{app[:name]}" do
       owner app[:name]
       mode "0755"
