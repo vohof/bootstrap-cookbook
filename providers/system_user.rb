@@ -174,6 +174,7 @@ action :delete do
     code %{
       test -d #{@@user.home} && rm -fR #{@@user.home}
       test -d /var/log/#{@@user.name} && rm -fR /var/log/#{@@user.name}
+      rm -f /etc/init/#{@@user.name}*
       [[ "$(id #{@@user.name} 2>&1)" =~ "uid" ]] && userdel #{@@user.name}
       exit 0
     }
