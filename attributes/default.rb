@@ -117,6 +117,10 @@ default[:bootstrap][:packages][:install] = [
                 # to access information from temperature, voltage, and fan speed sensors. It
                 # works with most newer systems.
 
+  'locate',     # maintain and query an index of a directory tree
+                # updatedb generates an index of files and directories. GNU locate can be used
+                # to quickly query this index.
+
   'logrotate',  # The logrotate utility is designed to simplify the administration of
                 # log files on a system which generates a lot of log files. Logrotate
                 # allows for the automatic rotation compression, removal and mailing of
