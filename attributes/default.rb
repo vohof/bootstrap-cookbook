@@ -252,7 +252,7 @@ default[:bootstrap][:packages][:install] = [
   'tree',       # Displays an indented directory tree, using the same color assignments as
                 # ls, via the LS_COLORS environment variable.
 
-  'unrar',      # Unrar can extract files from .rar archives. If you want to create .rar
+  'unrar-free', # Unrar can extract files from .rar archives. If you want to create .rar
                 # archives, install package rar.
 
   'unzip',      # InfoZIP's unzip program. With the exception of multi-volume archives
