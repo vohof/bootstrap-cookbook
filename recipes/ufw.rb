@@ -1,3 +1,5 @@
+package "ufw"
+
 rules = ["ufw --force enable"]
 rules += node[:firewall]
 rules << "ufw reload"
