@@ -142,6 +142,12 @@ default[:bootstrap][:packages][:install] = [
                 # and NNTP servers. Current versions of Lynx run on Unix, VMS, Windows
                 # 95/NT, 386DOS and OS/2 EMX.
 
+  'netstat',    # This package includes the important tools for controlling the network
+                # subsystem of the Linux kernel.  This includes arp, ifconfig, netstat,
+                # rarp, nameif and route.  Additionally, this package contains utilities
+                # relating to particular network hardware types (plipconfig, slattach,
+                # mii-tool) and advanced aspects of IP configuration (iptunnel, ipmaddr).
+
   'nmon',       # nmon is a systems administrator, tuner, benchmark tool.
                 # It can display the CPU, memory, network, disks (mini graphs or numbers),
                 # file systems, NFS, top processes, resources (Linux version & processors) and
